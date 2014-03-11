@@ -18,8 +18,8 @@ EOF
 
 help_message()
 {
-    echo "$usage"
-    echo -e "$options"
+    echo "$usage" >&2
+    echo -e "$options" >&2
 }
 
 # Parse command-line arguments and options
