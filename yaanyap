@@ -1,13 +1,79 @@
 #!/bin/bash
 
 
-videoname=$(get_flash_videos "$1" 2>&1 | grep 'Done.' | awk '{ print $6 }')
-filename="${videoname%.*}"
-echo -n "Bit rate (kbit/s) (default 320): "
-read bitrate
+set -o errexit
+usage="Usage: ./yaanyap [options] url [url ...]"
+options=$(cat << EOF
+Options:
+    -b  bitrate     bitrate (kbps) for output mp3
+    -f  filename    file of list of urls
+EOF
+)
+
+help_message()
+{
+    echo "$usage"
+    echo -e "$options"
+}
+
+# Parse command-line arguments and options
+declare -a urls
+while (( "$#" ))
+do
+    if [ "$1" = "-f" ]
+    then
+        listname="$2"
+        has_listname="1"
+        shift 2
+    elif [ "$1" = "-b" ]
+    then
+        bitrate="$2"
+        shift 2
+    elif [[ "$1" =~ ^(http|https|ftp)://.*  ]]
+    then
+        urls+=("$1") 
+        shift
+    else
+        help_message
+        exit 1
+    fi
+done
+
+if [ -z "${urls}" -a -z "$has_listname" ]
+then
+     help_message
+     exit 1
+fi
+
+if [ -n "$has_listname" ]
+then
+    # Read urls from the list file
+    while read url
+    do
+        urls+=("$url") 
+    done < "$listname"
+
+    # Shell will not exit upon "No such file or directory" error
+    # Catch it here
+    if [ "$?" -ne 0 ]
+    then
+        exit 1
+    fi
+fi
+
+# Set bitrate for output mp3 if not specified as optinal argument
 if [ -z "$bitrate" ]
 then
-    bitrate=320
+    echo -n "Bit rate (kbps) (default 320): "
+    read bitrate
 fi
-ffmpeg -i "$videoname" -acodec libmp3lame -ac 2 -ab "$bitrate"k -vn -y "$filename".mp3
+bitrate="${bitrate:-320}"
+
+# Download videos and convert
+for url in "${urls[@]}"
+do
+    videoname=$(get_flash_videos "$url" 2>&1 | grep 'Done.' | awk '{ print $6 }')
+    filename="${videoname%.*}"
+    ffmpeg -i "$videoname" -acodec libmp3lame -ac 2 -ab "$bitrate"k -vn -y "$filename".mp3
+done
 
