@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-# usage: ./install.sh yum cpan git
+usage="Usage: ./install.sh yum cpan git"
 # Install dependencies and make symbolic links from the Git repository
 while (( "$#" ))
 do
@@ -20,5 +20,8 @@ do
         ln -s $(realpath get-flash-videos/get_flash_videos) \
             /usr/local/bin/get_flash_videos
         shift
+    else
+        echo "$usage" >&2
+        exit 1
     fi
 done
