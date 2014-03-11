@@ -2,6 +2,12 @@
 
 
 set -o errexit
+
+# Check dependencies
+which get_flash_videos &> /dev/null || { echo  "get_flash_videos is \
+not installed"; exit 1; }
+which ffmpeg &> /dev/null || { echo "ffmpeg is not installed"; exit 1; }
+
 usage="Usage: ./yaanyap [options] url [url ...]"
 options=$(cat << EOF
 Options:
