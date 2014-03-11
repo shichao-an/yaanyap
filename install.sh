@@ -17,7 +17,7 @@ do
     elif [ "$1" = "git" ]
     then
         git clone https://github.com/monsieurvideo/get-flash-videos.git
-        ln -s get-flash-videos/get_flash_videos \
+        ln -s $(realpath get-flash-videos/get_flash_videos) \
             /usr/local/bin/get_flash_videos
         shift
     fi
