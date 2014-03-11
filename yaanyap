@@ -1,0 +1,7 @@
+#!/bin/bash
+
+
+videoname=$(get_flash_videos "$1" 2>&1 | grep 'Done.' | awk '{ print $6 }')
+filename="${videoname%.*}"
+ffmpeg -i "$filename".mp4 -acodec libmp3lame -ac 2 -ab 320 -vn -y "$filename".mp3
+
