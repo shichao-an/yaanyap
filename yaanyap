@@ -37,6 +37,7 @@ do
         shift 2
     elif [ "$1" = "-b" ]
     then
+        [[ "$2" =~ ^[0-9]+$ ]] || { help_message; exit 1; }
         bitrate="$2"
         shift 2
     elif [[ "$1" =~ ^(http|https|ftp)://.*  ]]
