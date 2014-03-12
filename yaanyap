@@ -56,7 +56,7 @@ do
     fi
 done
 
-if [ -z "$outdir"]
+if [ -z "$outdir" ]
 then
     outdir="$PWD"
 fi
@@ -103,4 +103,4 @@ do
     mv -t "$outdir" "$videoname" "$filename".mp3
 done
 
-trap "{ rm -rf $tempdir; exit 2; }" EXIT
+trap "{ rm -rf $tempdir; exit 2; }" EXIT SIGINT
