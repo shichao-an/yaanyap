@@ -11,7 +11,7 @@ Requirements
 
 Installation
 ------------
-Install requirements before running this script. You have to install ``get_flash_videos`` commands to binary path (e.g. /usr/local/bin) as yaanyap is based on this command. You can use the install.sh helper script to install relevant packages and install ``get_flash_video`` to /usr/local/bin.
+Install requirements before running this script. You have to install ``get_flash_videos`` commands to binary path (e.g. /usr/local/bin) as yaanyap is based on this command. You can use the install.sh helper script to install relevant packages and install ``get_flash_video`` to /usr/local/bin. However, get-flash-videos's Nicovideo support was broken as you can `see here <https://code.google.com/p/get-flash-videos/wiki/BrokenSites>`_, which makes the name of this project rather irrelevant. You can still find videos from the `working sites <https://code.google.com/p/get-flash-videos/wiki/WorkingSites>`_.
 
 Download yaanyap or clone it::
 
