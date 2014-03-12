@@ -1,7 +1,7 @@
 yaanyap
 =======
 
-yaanyap (Yet Another Anyap) is a command-line script to batch download online videos and extract audio to MP3. It is named after "anyap" because of the termination of its site `nicosound.anyap.info <http://nicosound.anyap.info/>`_.
+yaanyap (Yet Another Anyap) is a command-line script to batch download online videos and extract audio to MP3. It is named after "anyap" because of the termination of its site `nicosound.anyap.info <http://nicosound.anyap.info/>`_. This script is based on `get-flash-videos <https://code.google.com/p/get-flash-videos/>`_ . However, get-flash-videos's Nicovideo support was broken as you can `see here <https://code.google.com/p/get-flash-videos/wiki/BrokenSites>`_, which makes the name of this project rather irrelevant. You can still find videos from the `working sites <https://code.google.com/p/get-flash-videos/wiki/WorkingSites>`_.
 
 Requirements
 ------------
@@ -11,9 +11,24 @@ Requirements
 
 Installation
 ------------
-Install requirements before running this script. You have to install ``get_flash_videos`` commands to binary path (e.g. /usr/local/bin) as yaanyap is based on this command. You can use the install.sh helper script to install relevant packages and install ``get_flash_video`` to /usr/local/bin. However, get-flash-videos's Nicovideo support was broken as you can `see here <https://code.google.com/p/get-flash-videos/wiki/BrokenSites>`_, which makes the name of this project rather irrelevant. You can still find videos from the `working sites <https://code.google.com/p/get-flash-videos/wiki/WorkingSites>`_.
+Install requirements before running this script. You have to install ``get_flash_videos`` commands to binary path (e.g. /usr/local/bin) as yaanyap is based on this command.
 
-Download yaanyap or clone it::
+To install automatically, you can use the install.sh helper script to install relevant packages and install ``get_flash_video`` ``yaanyap`` to /usr/local/bin::
+
+    $ wget https://raw.github.com/shichao-an/yaanyap/master/install.sh
+
+On Debian/Ubuntu::
+
+    $ sudo ./install.sh apt-get cpan
+    $ sudo ./install.sh gfv yaanyap
+
+On Fedora::
+
+    $ sudo ./install.sh yum cpan
+    $ sudo ./install gfv yaanyap
+
+
+Manually, you can download yaanyap or clone it and make your own scripts::
 
     $ git clone https://github.com/shichao-an/yaanyap.git
 
