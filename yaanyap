@@ -3,6 +3,9 @@
 
 set -o errexit
 
+tempdir="/tmp/yaanyap"
+trap "{ rm -rf $tempdir; exit 2; }" EXIT SIGINT
+
 # Check dependencies
 which get_flash_videos &> /dev/null || { echo  "get_flash_videos is \
 not installed"; exit 1; }
@@ -92,7 +95,6 @@ fi
 bitrate="${bitrate:-320}"
 
 # Download videos and convert
-tempdir="/tmp/yaanyap"
 mkdir -p "$tempdir"
 cd "$tempdir"
 for url in "${urls[@]}"
@@ -102,5 +104,3 @@ do
     ffmpeg -i "$videoname" -acodec libmp3lame -ac 2 -ab "$bitrate"k -vn -y "$filename".mp3
     mv -t "$outdir" "$videoname" "$filename".mp3
 done
-
-trap "{ rm -rf $tempdir; exit 2; }" EXIT SIGINT
