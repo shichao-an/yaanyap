@@ -13,7 +13,7 @@ Installation
 ------------
 Install requirements before running this script. You have to install ``get_flash_videos`` commands to binary path (e.g. /usr/local/bin) as yaanyap is based on this command.
 
-To install automatically, you can use the install.sh helper script to install relevant packages and install ``get_flash_video`` and ``yaanyap`` to /usr/local/bin::
+You can use the install.sh helper script to install relevant packages and make symbolic links of ``get_flash_video`` and ``yaanyap`` to /usr/local/bin::
 
     $ wget https://raw.github.com/shichao-an/yaanyap/master/install.sh
 
