@@ -2,7 +2,14 @@
 
 # Make sure you are root when running this script
 set -o errexit
-usage="Usage: ./install.sh [yum|apt-get] cpan git [yaanyap]"
+usage="Usage: ./install.sh [yum|apt-get] cpan gfv [yaanyap]"
+
+if [ "$#" -eq 0 ]
+then
+    echo "$usage" >&2
+    exit 1
+fi
+
 # Install dependencies and make symbolic links from the Git repository
 while (( "$#" ))
 do
@@ -22,24 +29,44 @@ do
         which cpan &> /dev/null || { echo "No command named 'cpan' found"; exit 1; }
         cpan install local::lib WWW::Mechanize Module::Find LWP::Protocol::https
         shift
-    elif [ "$1" = "git" ]
+    elif [ "$1" = "gfv" ]
     then
+        echo -n "Specifiy download directory for get-flash-videos (default current): "
+        read gfv_path
+        eval gfv_path="$gfv_path" # Tilde expansion
+        if [ ! -d "$gfv_path" ]
+        then
+            echo "$gfv_path is not a directory or does not exist" >&2
+            exit 1
+        fi
+        gfv_path=${gfv_path:-$PWD}
+        pushd "$PWD"
         which git &> /dev/null || { echo "No command named 'git' found"; exit 1; }
         git clone https://github.com/monsieurvideo/get-flash-videos.git
-        ln -s $(realpath get-flash-videos/get_flash_videos) \
+        echo "get-flash-videos has been cloned to $gfv_path."
+        ln -s $(realpath "$gfv_path/get-flash-videos/get_flash_videos") \
             /usr/local/bin/get_flash_videos
+        popd
         shift
     elif [ "$1" = "yaanyap" ]
     then
-        yaanyap_dir=$(dirname "$0")
-        if [ ! -f "$yaanyap_dir/yaanyap" ]
+        echo -n "Specifiy download directory for yaanyap (default current): "
+        read yaanyap_path
+        eval yaanyap_path="$yaanyap_path" # Tilde expansion
+        if [ ! -d $yaanyap_path ]
         then
-            git clone https://github.com/shichao-an/yaanyap 
-            yaanyap_dir="yaanyap"
+            echo "$yaanyap_path is not a directory or does not exist" >&2
+            exit 1
         fi
-        ln -s $(realpath "$yaanyap_dir/yaanyap") /usr/local/bin/yaanyap
+        yaanyap_path=${yaanyap_path:-$PWD}
+        pushd "$PWD"
+        which git &> /dev/null || { echo "No command named 'git' found"; exit 1; }
+        cd "$yaanyap_path"
+        git clone https://github.com/shichao-an/yaanyap 
+        echo "yaanyap has been cloned to $yaanyap_path"
+        ln -s $(realpath "$yaanyap_path/yaanyap/yaanyap") /usr/local/bin/yaanyap
+        popd
         shift
-
     else
         echo "$usage" >&2
         exit 1

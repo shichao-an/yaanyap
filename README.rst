@@ -21,7 +21,7 @@ Usage
 -----
 ::
 
-    $ ./yaanyap [-f FILENAME] [-b BITRATE] [URL...]
+    $ ./yaanyap [-f FILENAME] [-b BITRATE] [-o DIRECTORY] [URL...]
 
 If bitrate is not specified, it will prompt for it. ``FILENAME`` and ``URL`` can both appear; the script will download and convert all the relevant URLs.
 
