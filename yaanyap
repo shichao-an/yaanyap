@@ -13,7 +13,7 @@ options=$(cat << EOF
 Options:
     -b  bitrate     bitrate (kbps) for output mp3
     -f  filename    file of list of urls
-    -o  directory   output directory
+    -o  directory   output directory (default current)
 EOF
 )
 
@@ -42,7 +42,7 @@ do
         shift
     elif [[ "$1" = "-o" ]]
     then
-        if [ -d "$2" ]
+        if [ -d "$2" ]  # Positional parameter $2 is already tilde-expanded
         then
             outdir="$2"
         else
