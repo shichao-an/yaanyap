@@ -45,7 +45,7 @@ do
         cd "$gfv_path"
         git clone https://github.com/monsieurvideo/get-flash-videos.git
         echo "get-flash-videos has been cloned to $gfv_path."
-        ln -s $(realpath "$gfv_path/get-flash-videos/get_flash_videos") \
+        ln -s $(readlink -f "$gfv_path/get-flash-videos/get_flash_videos") \
             /usr/local/bin/get_flash_videos
         popd
         shift
@@ -65,7 +65,7 @@ do
         cd "$yaanyap_path"
         git clone https://github.com/shichao-an/yaanyap 
         echo "yaanyap has been cloned to $yaanyap_path"
-        ln -s $(realpath "$yaanyap_path/yaanyap/yaanyap") /usr/local/bin/yaanyap
+        ln -s $(readlink -f "$yaanyap_path/yaanyap/yaanyap") /usr/local/bin/yaanyap
         popd
         shift
     else

@@ -44,15 +44,11 @@ do
     then
         urls+=("$1") 
         shift
-    elif [[ "$1" = "-o" ]]
+    elif [ "$1" = "-o" ]
     then
-        if [ -d "$2" ]  # Positional parameter $2 is already tilde-expanded
-        then
-            outdir="$2"
-        else
-            echo "$2 is not a directory or does not exist." >&2
-            exit 1
-        fi
+        # Positional parameter $2 is already tilde-expanded
+        [ -d "$2" ] || { echo "$2 is not a directory or does not exist." >&2; exit 1; }
+        outdir=$(readlink -f "$2")
         shift 2
     else
         help_message
@@ -60,16 +56,8 @@ do
     fi
 done
 
-if [ -z "$outdir" ]
-then
-    outdir="$PWD"
-fi
-
-if [ -z "${urls}" -a -z "$has_listname" ]
-then
-     help_message
-     exit 1
-fi
+[ -z "$outdir" ] && outdir="$PWD"
+[ -z "${urls}" -a -z "$has_listname" ] && { help_message; exit 1; }
 
 if [ -n "$has_listname" ]
 then
