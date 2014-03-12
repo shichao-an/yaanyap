@@ -8,11 +8,12 @@ which get_flash_videos &> /dev/null || { echo  "get_flash_videos is \
 not installed"; exit 1; }
 which ffmpeg &> /dev/null || { echo "ffmpeg is not installed"; exit 1; }
 
-usage="Usage: ./yaanyap [options] url [url ...]"
+usage="Usage: ./yaanyap [options] [url ...]"
 options=$(cat << EOF
 Options:
     -b  bitrate     bitrate (kbps) for output mp3
     -f  filename    file of list of urls
+    -o  directory   output directory
 EOF
 )
 
@@ -39,11 +40,26 @@ do
     then
         urls+=("$1") 
         shift
+    elif [[ "$1" = "-o" ]]
+    then
+        if [ -d "$2" ]
+        then
+            outdir="$2"
+        else
+            echo "$2 is not a directory or does not exist." >&2
+            exit 1
+        fi
+        shift 2
     else
         help_message
         exit 1
     fi
 done
+
+if [ -z "$outdir"]
+then
+    outdir="$PWD"
+fi
 
 if [ -z "${urls}" -a -z "$has_listname" ]
 then
@@ -76,10 +92,15 @@ fi
 bitrate="${bitrate:-320}"
 
 # Download videos and convert
+tempdir="/tmp/yaanyap"
+mkdir -p "$tempdir"
+cd "$tempdir"
 for url in "${urls[@]}"
 do
     videoname=$(get_flash_videos "$url" 2>&1 | grep 'Done.' | awk '{ print $6 }')
     filename="${videoname%.*}"
     ffmpeg -i "$videoname" -acodec libmp3lame -ac 2 -ab "$bitrate"k -vn -y "$filename".mp3
+    mv -t "$outdir" "$videoname" "$filename".mp3
 done
 
+trap "{ rm -rf $tempdir; exit 2; }" EXIT
