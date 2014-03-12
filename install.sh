@@ -42,6 +42,7 @@ do
         gfv_path=${gfv_path:-$PWD}
         pushd "$PWD"
         which git &> /dev/null || { echo "No command named 'git' found"; exit 1; }
+        cd "$gfv_path"
         git clone https://github.com/monsieurvideo/get-flash-videos.git
         echo "get-flash-videos has been cloned to $gfv_path."
         ln -s $(realpath "$gfv_path/get-flash-videos/get_flash_videos") \
